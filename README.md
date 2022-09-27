@@ -50,6 +50,59 @@
 | DWORD64 CreateRemoteMemory(DWORD length) | 在对端分配内存空间 |
 | DWORD DeleteRemoteMemory(DWORD64 address, DWORD length) | 销毁对端内存 |
 
+以读取多级偏移为例，需要动态调用`Engine.dll`里面的导出函数，由导出函数去调用`LyMemory.sys`驱动程序，获取结果。
+```C
+#include <iostream>
+#include <Windows.h>
+
+// 安装驱动
+typedef void(*InstallDriver)();
+
+// 读写内存偏移整数型
+typedef struct
+{
+	DWORD pid;
+	ULONG64 base_address;
+	DWORD offset[32];
+	DWORD offset_len;
+	INT64 data;
+}ProcessDeviationIntMemory;
+
+typedef INT32(*ReadProcessDeviationInt32)(ProcessDeviationIntMemory);
+
+
+int main(int argc, char *argv[])
+{
+	// 动态加载驱动
+	HMODULE hmod = LoadLibrary(L"Engine.dll");
+
+	InstallDriver Install = (InstallDriver)GetProcAddress(hmod, "InstallDriver");
+	Install();
+
+
+	// 读取多级便宜整数型
+	ReadProcessDeviationInt32 read = (ReadProcessDeviationInt32)GetProcAddress(hmod, "ReadProcessDeviationInt32");
+	ProcessDeviationIntMemory write = { 0 };
+
+	write.pid = 6672;                  // 进程PID
+	write.base_address = 0x6566e0;     // 基地址
+	write.offset_len = 4;              // 偏移长度
+	write.data = 0;                    // 读入的数据
+	write.offset[0] = 0x18;            // 一级偏移
+	write.offset[1] = 0x0;             // 二级偏移
+	write.offset[2] = 0x14;            // 三级偏移
+	write.offset[3] = 0x0c;            // 四级偏移
+
+	DWORD ref = read(write);
+
+	printf("读取参数: %d \n", ref);
+
+	getchar();
+	return 0;
+}
+```
+
+
 
 
 
