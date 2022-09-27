@@ -14,7 +14,11 @@
 
 程序调用次序如下：
 
+<div align=center>
+
 ![image](https://user-images.githubusercontent.com/52789403/192541072-4dfa14e5-046f-41d5-bcc4-4ed04d58b316.png)
+
+</div>
 
 读写工具目前支持的读写模式包括通用读写函数:
 
