@@ -74,7 +74,6 @@ typedef struct
 
 typedef INT32(*ReadProcessDeviationInt32)(ProcessDeviationIntMemory);
 
-
 int main(int argc, char *argv[])
 {
 	// 动态加载驱动
