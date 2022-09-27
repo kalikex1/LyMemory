@@ -79,9 +79,10 @@ int main(int argc, char *argv[])
 	InstallDriver Install = (InstallDriver)GetProcAddress(hmod, "InstallDriver");
 	Install();
 
-
-	// 读取多级便宜整数型
-	ReadProcessDeviationInt32 read = (ReadProcessDeviationInt32)GetProcAddress(hmod, "ReadProcessDeviationInt32");
+	// 读取多级偏移整数型
+	ReadProcessDeviationInt32 read = (ReadProcessDeviationInt32) \
+	                            GetProcAddress(hmod, "ReadProcessDeviationInt32");
+	
 	ProcessDeviationIntMemory write = { 0 };
 
 	write.pid = 6672;                  // 进程PID
