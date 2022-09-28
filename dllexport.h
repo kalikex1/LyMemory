@@ -39,21 +39,11 @@ typedef struct
 	BYTE OpCode;
 }ProcessByteMemory;
 
-// 附加通用读写
-struct r3Buffer
-{
-	ULONG64 Address;
-	ULONG64 Buffer;
-	ULONG64 size;
-}appBuffer;
-
 // 取模块名称结构体
 typedef struct ModuleInfoStruct
 {
 	CHAR ModuleName[1024];
 }ModuleInfoStruct, *LPModuleInfoStruct;
-
-
 
 cDrvCtrl DriveControl;
 
